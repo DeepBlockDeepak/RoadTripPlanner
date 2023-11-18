@@ -1,0 +1,47 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="formwrapper"; style="background-color: #744908df; width:350px; text-align: center; margin:0; position:absolute;
+top:320px;left:50%;transform: translate(-50%,-50%);border:rgba(119, 136, 153, 0.692);";>
+    <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size: xxx-large;">Sign In</h1>
+        <p><a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"; href="{{ url_for('register') }}">New User Registration</a></p>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        
+        <p style="color: darkgray;font-size:large">
+            {{ form.email.label (style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif")}}<br>
+            {{ form.email(size=32, style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif") }}<br> <!--to commit this-->
+            {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p style="color:darkgray;font-size:large">
+            {{ form.password.label (style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif")}}<br>
+            {{ form.password(size=32, style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif") }}<br> <!--to commit this-->
+            {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.remember() }} {{ form.remember.label (style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif")}}
+        </p>
+
+        <p>
+            {{ form.submit(style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif") }}
+        </p>
+    </form>
+</div>
+
+<style>
+    body {
+        background-image: url("{{url_for('static', filename='zionsNationalParkNarrows.jpg')}}");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
+
+{% endblock %}
+
+<!--ready to commit-->

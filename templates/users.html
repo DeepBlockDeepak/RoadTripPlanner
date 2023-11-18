@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+{% block content %}
+
+<div style="width:70%; padding-left: 25%;"> <!--commit this-->
+    <h5 class = "title"><span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size:xx-large">Road Trip!</span></h5>
+    <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: x-large"> Current Road Trip Buddies: </p>
+        {% if current_users|length == 0 %}
+        <p style="color:blue;"> Oooops. There are no users in your database. Add them. </p>
+        {% endif %}
+        <ul style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"> <!--commit this?-->
+        {% for user in current_users %}
+        <li class = "link"; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><a href="{{ url_for('profile', user_id = user.id)}}">{{user}}</a> ... joined on {{ user.joined_at.strftime("%B %d, %Y at %H:%M:%S") }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+<style>
+    body {
+        background-image: url("https://parkwayinn.com/wp-content/uploads/2020/06/Bison-Standing-Before-Mount-Moran-e1592503082192.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+        }
+</style>
+
+{% endblock %}

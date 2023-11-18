@@ -1,0 +1,122 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h1 style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> 
+  <br>Sup, {{template_user.username}}. Where do you want to travel?<br><br></h2>
+
+
+<div class="formwrapper"; style="background-color:honeydew ;width: 30%; float: left; padding: 50px;";>
+  <h2 style="text-align:left/center; font-family: Georgia, 'Times New Roman', Times, serif;"> Search Origin & Destination:</h2>
+  <form action="" method="post" novalidate>
+  {{ travel_form.hidden_tag() }}
+      <p>
+        {{ travel_form.origin_city_state.label (style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}<br>
+        {{ travel_form.origin_city_state(size=30, style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}<br>
+      </p>
+      <p>
+        {{ travel_form.destination_city_state.label (style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}<br>
+        {{ travel_form.destination_city_state(size=30, style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}<br>
+      </p>
+
+      <p>
+        {{ travel_form.submit(style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}
+      </p>
+    
+  </form>
+</div>
+
+
+
+
+<div class="formwrapper"; style="background-color: #0852745b ;width: 30%; float: left; padding: 50px;";>
+  <h2 style="text-align:left/center; font-family: Georgia, 'Times New Roman', Times, serif; color:aliceblue"> What's Your Travel Budget?</h2>
+  <h2 style="text-align:left/center; font-family: Georgia, 'Times New Roman', Times, serif; color:aliceblue">Budget = {{ template_user.budget }}</h1>
+  <form action="" method="post" novalidate>
+  {{ budget_form.hidden_tag() }}
+      <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue">
+        <br>
+        {{ budget_form.budget.label (style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}<br>
+        {{ budget_form.budget(size=30, style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}<br>
+      </p>
+      <p>
+        {{ budget_form.submit(style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;") }}
+      </p>
+    
+  </form>
+</div>
+
+
+
+<div class="row">
+  <div class="column" style="background-color:#0852745b; width: 40%; float: right; padding-right: 70px; padding-left: 70px; padding-bottom: 50px;">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Your Travels:</h2>
+    {% if template_travel_list %}
+    {% for travel in template_travel_list.travels %} 
+      <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue">
+        <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"
+        href="{{url_for('travel_profile', user_id=template_user.id, travel_id=travel.id)}}">{{ travel }}</a></p>
+    {% endfor %}
+    {% endif %}  
+  </div>
+
+
+  
+  <div class="column" style="background-color:#91dd8b54; width: 40%; float: right; padding-right: 70px; padding-left: 70px; padding-bottom: 80px">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Current RoadTrip Places! :</h2>
+    {% for place in template_places %}
+        <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+          <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"
+          href="{{url_for('place_info', place_id=place.id)}}">{{place}}</a>
+          {% if template_favorite_list %}
+            <a href="{{url_for('add_favorite_item', user_id = template_user.id, place_id = place.id, favoritelist_id = template_favorite_list.id)}}"> ... Add to Favorites</a>
+          {% endif %}
+        </p>
+    {% endfor %}
+  </div>
+
+  <div class="column" style="background-color:#0852745b; width: 40%; float: left; padding-left: 70px;">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue">Your Favorites:</h2>
+    {% if template_favorite_list %}
+    {% for item in template_favorite_list.favoriteplaces %} 
+      {% for place in template_places %}
+        {% if item.place_id == place.id %} 
+        <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue"> {{ place }} 
+          <a href="{{url_for('remove_item', user_id = template_user.id, item_id = item.id, item_type = 'favorite')}}"
+          style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Remove</a></p>
+        {% endif %}
+      {% endfor %}
+    
+    {%endfor%}
+
+    {% endif %}  
+  </div>
+
+
+  <div class="column" style="background-color:#0852745b; width: 40%; float: left; padding-left: 70px; padding-bottom: 80px;">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue">Your Searched Places:</h2>
+    {% if template_search_list %}
+    {% for item in template_search_list.searchplaces %} 
+      {% for place in template_places %}
+        {% if item.place_id == place.id %} 
+        <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue"> {{ place }} 
+          <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"; 
+          href="{{url_for('remove_item', user_id = template_user.id, item_id = item.id, item_type =  'search')}}">Remove</a></p>
+        {% endif %}
+      {% endfor %}
+    
+    {%endfor%}
+
+    {% endif %}  
+  </div>
+</div>
+
+<style>
+  body {
+      background-image: url("{{url_for('static', filename='seattle.jpg')}}");
+      background-size: cover;
+      background-attachment: fixed;
+      }
+</style> <!--import seattle.jpg picture into static folder-->
+
+{% endblock %}
+

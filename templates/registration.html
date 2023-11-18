@@ -1,0 +1,61 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="formwrapper"; style="background-color: #085e7478; width:350px; text-align: center; margin:0; position:absolute;
+top:250px;left:250px; transform: translate(-50%,-50%); border-style: solid;
+border:rgba(119, 136, 153, 0.692); border-width: 50px";>
+  <head>
+    <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color:silver">New User Registration</h1>
+  </head>
+  <body>
+    <h4 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Sign-up</h4>
+      <form action="" method="post">
+          {{ form.hidden_tag() }}
+          <p>
+              {{ form.username(size=32,style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",placeholder="username") }}<br>
+              {% for error in form.username.errors %}
+              <span style="color: rgba(255, 255, 255, 0.763);
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">[{{ error }}]</span>
+              {% endfor %}
+          </p>
+          <p>
+              {{ form.email(size=32,style="font-family: 'Franklin Gothic Medium',
+                'Arial Narrow', Arial, sans-serif",placeholder="email@gmail.com") }}<br>
+              {% for error in form.email.errors %}
+              <span style="color: rgba(255, 255, 255, 0.763);
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">[{{ error }}]</span>
+              {% endfor %}
+          </p>
+          <p>
+              {{ form.password(size=32,style="font-family: 'Franklin Gothic Medium',
+                'Arial Narrow', Arial, sans-serif",placeholder="password*$%!@") }}<br>
+              {% for error in form.password.errors %}
+              <span style="color: rgba(255, 255, 255, 0.763);
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">[{{ error }}]</span>
+              {% endfor %}
+          </p>
+          <p>
+              {{ form.password2(size=32,style="font-family: 'Franklin Gothic Medium',
+                'Arial Narrow', Arial, sans-serif",placeholder="password*$%!@") }}<br>
+              {% for error in form.password2.errors %}
+              <span style="color: rgba(255, 255, 255, 0.763);
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">[{{ error }}]</span>
+              {% endfor %}
+          </p>
+      
+  
+          <p>{{ form.submit(style="font-family: 'Franklin Gothic Medium','Arial Narrow', Arial, sans-serif",) }}</p>
+      </form>
+  </body>
+</div>
+
+<style>
+    body {
+        background-image: url("{{url_for('static', filename='robertovivancosNewYorkCity.jpg')}}");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
+
+{% endblock %}

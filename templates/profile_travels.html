@@ -1,0 +1,28 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<h3 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Hi, {{ user.username}}. <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"; href="{{url_for('profile', user_id=user.id)}}">Go Back to your profile</a></h3>
+
+<div class="row">
+  <div class="column" style="background-color:#8fffa9; padding: 10px; ">
+    <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; text-align: center;">{{ travel }} ... Cost = ${{ travel.price }} ... Your leftover budget = ${{ user.budget - travel.price  }}</h1> 
+        <h3 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Main Cities Along The Trip:</h3>
+        <ul style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+          {% for travelplaceitem in travel.route_places %}
+            {% for place in places %}
+              {% if place.id == travelplaceitem.place_id %}              
+                <li style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
+                  <a href="{{url_for('place_info', place_id=place.id)}}">{{place}}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      
+  </div>
+
+</div>
+
+{% endblock %}
+
