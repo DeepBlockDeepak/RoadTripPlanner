@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Caches
+.cache/
+.upm/
+
+# Configuration files
+.config/
+.replit
+
+# Database files
+*.db
+
+# Log files
+runtime.log
+
+# Breakpoints
+.breakpoints
+
+# Poetry lock file (optional, depending on whether you want to keep dependencies locked)
+# poetry.lock
+
+# Other files specific to your environment
+# Add any other file/directory patterns that you don't want to track

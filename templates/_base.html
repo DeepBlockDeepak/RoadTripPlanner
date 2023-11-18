@@ -1,0 +1,37 @@
+<html>
+    <head>
+      <title>TravelFlask</title>
+      <meta charset = "UTF-8">
+      <link rel="stylesheet" type = "text/css" href="../static/style.css">
+      <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2554/2554922.png">
+    </head>
+    <body>
+      <div class="topnav">
+          <a href="/profiles">PROFILES</a>
+          <a href="/dashboard">DASHBOARD</a>
+          <a href = "/display_schema" >DB SCHEMA</a>
+          <a href = "/login" >LOGIN</a>
+          <a href = "/logout" >LOGOUT</a>
+          <a href = "/register" >REGISTER</a>
+      </div>
+        
+
+
+       <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+          {% for message in messages %}
+            {% if message %}
+              <li><b>{{ message }}</b></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+      
+        {% block content %}{% endblock %}
+      
+    </body>
+</html>

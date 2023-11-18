@@ -1,0 +1,59 @@
+{% extends '_base.html' %}
+
+{% block content %}
+<h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; text-align: center; margin-top: 3%; padding: 5px;
+background-color: rgba(127, 255, 212, 0.667); width: 65%; margin:auto; border-radius: 25px; border: 4px solid saddlebrown">Dashboard</h1>
+
+
+<div style="width:500px; background-color: rgba(240, 255, 255, 0.664); padding: 30px; float: left; margin-left: 6%; margin-top: 2%;">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Top 5 Most Favorited Places</h2>
+    <ul style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+    {% for place in most_favorited_places %}
+        <li style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ place.city }}, {{ place.state }} - {{ place.times_favorited }} favorite(s)</li>
+    {% endfor %}
+    </ul>
+
+    <br><br>
+    
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Top 5 Most Searched Places</h2>
+    <ul style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+    {% for place in most_searched_places %}
+        <li style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ place.city }}, {{ place.state }} - {{ place.times_searched }} search(es)</li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+<div style="width:500px; background-color: rgba(240, 255, 255, 0.664); padding: 30px; float: right; margin-right: 6%; margin-top: 2%">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">User Blurbs</h2>
+    <form method="POST" action="{{ url_for('submit_blurb') }}">
+        <label for="blurb"; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Share your thoughts:</label>
+        <input type="text" name="blurb" id="blurb" required; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+        <input type="submit" value="Submit"; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+    </form>
+    <ul style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+    {% for blurb in blurbs %}
+        <li style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ blurb.author.username }}: {{ blurb.content }}</li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+<div style="width:250px; background-color: rgba(240, 255, 255, 0.664); padding-left: 30px; float: right; margin-right: 15%; margin-top: 5%;">
+    <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Current Users</h2>
+    <ul style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+    {% for user in users %}
+        <li style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ user.username }}</li>
+    {% endfor %}
+    </ul>
+</div>
+
+<style>
+    body {
+        background-image: url("https://morethanjustparks.com/wp-content/uploads/2020/09/2Q3A5635-2.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style> <!--to commit after adding a picture-->
+
+{% endblock %}
