@@ -47,7 +47,7 @@ def not_found(e): # is this var, e, needed?
 
   
 # I still don't get why routes must be imported here!!!
-from routes import *
+from src.routes import *
 
 
 # Need to use this boiler plate so that other functions can be tested in Shell without triggering the Flask App to run
