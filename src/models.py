@@ -7,9 +7,9 @@ from main import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from log_manager import global_logger as log
+from src.log_manager import global_logger as log
 import pytz
-from scraping_functions.gas_price_extractor import get_gas_average 
+from src.scraping_functions.gas_price_extractor import get_gas_average 
 
 
 # Allows a User to write a "tweet" on the Dashboard

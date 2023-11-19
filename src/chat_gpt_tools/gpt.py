@@ -1,7 +1,7 @@
 #!python3
 # accessing openai's API with developer account
 import openai
-from chat_gpt_tools.open_ai_api_config import API_KEY #from api file
+from src.chat_gpt_tools.open_ai_api_config import API_KEY #from api file
 
 class SumChatGPT:
     # use LRU_Cache to store user_prompt -> gpt_responses?

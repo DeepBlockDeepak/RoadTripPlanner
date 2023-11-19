@@ -3,7 +3,7 @@ Boostraps the travel_library.db with the project's creators as Users (along with
 """
 
 from main import db, app
-from models import User, Place, Favoritelist, Searchlist, Travellist, Blurb
+from src.models import User, Place, Favoritelist, Searchlist, Travellist, Blurb
 import json
 
 with app.app_context():
