@@ -5,7 +5,7 @@ import time
 import asyncio
 import aiohttp
 from geopy.distance import geodesic
-from log_manager import global_logger as log
+from src.log_manager import global_logger as log
 
 # @TODO update google map api key
 API_KEY = "REDACTED"
