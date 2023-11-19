@@ -97,13 +97,11 @@ def get_main_image(city, state) -> str | None:
   except wikipedia.exceptions.PageError as e:
     # no wiki page found
     print(
-      error :=
       f"No Wikipedia page found for {search_query}: {type(e).__name__}: {e}")
     return None
   except wikipedia.exceptions.DisambiguationError as e:
     # disambiguation page
     print(
-      error :=
       f"Disambiguation page found for {search_query}: {type(e).__name__}: {e}. Selecting the first option."
     )
     try:
@@ -111,8 +109,7 @@ def get_main_image(city, state) -> str | None:
     except Exception as e:
       # error getting the disambiguation option
       print(
-        error :=
-        f"Error fetching the disambiguation option {search_query}: {type(e).__name__}: {e}"
+        "Error fetching the disambiguation option {search_query}: {type(e).__name__}: {e}"
       )
       return None
   except Exception as e:
@@ -127,14 +124,13 @@ def get_main_image(city, state) -> str | None:
 
   except IndexError as e:
     # no main image
-    print(error :=
-          f"No main image found for {search_query}: {type(e).__name__}: {e}")
+    print(
+      f"No main image found for {search_query}: {type(e).__name__}: {e}")
     return None
 
   except Exception as e:
     # there's an error getting the main image
     print(
-      error :=
       f"Error getting the main image for {search_query}: {type(e).__name__}: {e}"
     )
     return None

@@ -1,6 +1,5 @@
 import requests
 import json
-import os
 import time
 import asyncio
 import aiohttp
@@ -281,7 +280,7 @@ def _test_route() -> None:
     print(f"Running route test from \'{origin}\' to \'{destination}\'...")
     cities = get_cities_list(origin, destination)
 
-    if cities != None:
+    if cities:
         print("Response:")
         print("\n".join([f"{city[0]}, {city[1]}, {city[2]}" for city in cities.values()]))
 
@@ -291,7 +290,7 @@ def _test_images() -> None:
     
     print(f"Retrieving photos for {photo_source}")
     photos = get_place_images(photo_source)
-    if photos != None:
+    if photos:
         print(f"Found {len(photos)} pictures")
         i = 1
         for photo in photos:
