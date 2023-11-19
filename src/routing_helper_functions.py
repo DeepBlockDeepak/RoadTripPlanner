@@ -3,13 +3,13 @@ Stores the non-route, helper functions needed in routes.py
 """
 
 from main import db
-from models import Favoriteitem, Place, Searchitem, Searchlist, User
-from scraping_functions.wiki_places import create_place_with_wiki
-from scraping_functions.state_abbreviations import state_abbr
-from scraping_functions.gas_price_extractor import obtain_avg_gas_price
-from scraping_functions.population import get_place_pop
-from log_manager import global_logger as log
-from map_requests import get_nearby_activities, get_route_distance_meters, APIError
+from src.models import Favoriteitem, Place, Searchitem, Searchlist, User
+from src.scraping_functions.wiki_places import create_place_with_wiki
+from src.scraping_functions.state_abbreviations import state_abbr
+from src.scraping_functions.gas_price_extractor import obtain_avg_gas_price
+from src.scraping_functions.population import get_place_pop
+from src.log_manager import global_logger as log
+from src.map_requests import get_nearby_activities, get_route_distance_meters, APIError
 import json
 
 # used for parsing the Travel Form data

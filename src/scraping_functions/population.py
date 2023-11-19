@@ -1,7 +1,7 @@
 import csv
-from scraping_functions.population_dictionary import pop_dictionary
-from scraping_functions.state_abbreviations import state_abbr
-from log_manager import global_logger as log
+from src.scraping_functions.population_dictionary import pop_dictionary
+from src.scraping_functions.state_abbreviations import state_abbr
+from src.log_manager import global_logger as log
 
 
 # USE THIS FUNCTION to get a city's population. Enter in string format the city name, and the state (abbreviated or

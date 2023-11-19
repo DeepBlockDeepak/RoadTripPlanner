@@ -1,17 +1,17 @@
 from flask import session, render_template, request, url_for, redirect, flash
 from main import app, db
-from models import User, Place, Favoritelist, Favoriteitem, Searchlist, Searchitem, Travel, Travellist, Travelplaceitem, Blurb
-from forms import OriginDestinationForm, RegistrationForm, LoginForm, SummarizeForm, BudgetForm
+from src.models import User, Place, Favoritelist, Favoriteitem, Searchlist, Searchitem, Travel, Travellist, Travelplaceitem, Blurb
+from src.forms import OriginDestinationForm, RegistrationForm, LoginForm, SummarizeForm, BudgetForm
 from flask_login import current_user, login_user, logout_user, login_required
-from map_requests import get_cities_list, get_route_distance_meters, APIError
+from src.map_requests import get_cities_list, get_route_distance_meters, APIError
 #from map_requests import APIError
-from log_manager import global_logger as log
-from login_manager_helper_functions import load_user, unauthorized  # Necessary!
-from routing_helper_functions import delete_removed_place_from_users_lists, place_generator, parse_travel_form_data, create_places_from_scraped_place_dict, exists, add_search_item, obtain_travel_price
-from chat_gpt_tools.gpt import SumChatGPT
+from src.log_manager import global_logger as log
+from src.login_manager_helper_functions import load_user, unauthorized  # Necessary!
+from src.routing_helper_functions import delete_removed_place_from_users_lists, place_generator, parse_travel_form_data, create_places_from_scraped_place_dict, exists, add_search_item, obtain_travel_price
+from src.chat_gpt_tools.gpt import SumChatGPT
 import json
 from json import JSONDecodeError
-from scraping_functions.wiki_places import get_main_image
+from src.scraping_functions.wiki_places import get_main_image
 
 
 # constant; key for the session to store the logged-in user-id
