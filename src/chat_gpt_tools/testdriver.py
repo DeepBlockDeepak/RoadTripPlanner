@@ -3,18 +3,13 @@
 from gpt import SumChatGPT
 from postprocess import postWrapper
 
-
-
 if __name__ == "__main__":
+	chatgpt = SumChatGPT()
 
-    chatgpt = SumChatGPT()
-    
-    place, data = postWrapper("data.txt")
+	place, data = postWrapper("data.txt")
 
-    #print(place)
-    #print(data)
+	# print(place)
+	# print(data)
 
-    output = chatgpt.gptWrapper(place, data)
-    print(output)
-
-    
+	output = chatgpt.gptWrapper(place, data)
+	print(output)

@@ -22,12 +22,14 @@ Thank you for your interest in contributing to the Travel App! This document pro
 1. **Ruff for Linting:**
    - We use Ruff to maintain code quality. To run Ruff on all Python files in the project, use:
      ```
-     poetry run ruff check src/
+     poetry run ruff check <dir>
      ```
    - To automatically fix linting issues in all files, use:
      ```
-     poetry run ruff check --fix src/
+     poetry run ruff check --fix <dir>
      ```
+
+   - In certain cases, we have configured Ruff to ignore specific linting rules that are not compatible with our project's structure. For example, in `main.py`, we ignore `E402: Module level import not at top of file` and `F403: from module import * used` due to Flask's import requirements for routes.
 
 2. **Pre-commit Hooks:**
    - Our project uses pre-commit hooks for automated checks before each commit.
@@ -35,10 +37,12 @@ Thank you for your interest in contributing to the Travel App! This document pro
      ```
      pre-commit install
      ```
+   - Pre-commit hooks will run Ruff and other linters/formatters to ensure code quality before commits.
 
 3. **GitHub Actions:**
    - Code pushed to the repository is automatically linted using GitHub Actions with Ruff.
    - Ensure that your code passes all checks before pushing or creating a pull request.
+   - Our GitHub Actions setup uses the same Ruff configuration as specified in our `.ruff.toml`, ensuring consistency across local and CI environments.
 
 ## Contributing Changes
 
