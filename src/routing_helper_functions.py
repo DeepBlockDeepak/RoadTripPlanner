@@ -60,7 +60,7 @@ def place_generator(city: str, county: str, state: str) -> 'Place':
     if len(state) == 2:
       try:
         state = state_abbr[state]
-      except:
+      except KeyError:
         print("Invalid State")
 
     place_wiki = create_place_with_wiki(city, county, state, LACKING_MSG)
