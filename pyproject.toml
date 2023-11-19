@@ -2,7 +2,7 @@
 name = "travel_app"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Jordan Medina jordan.medina1729@gmail.com"]
 
 [tool.poetry.dependencies]
 python = ">=3.10.0,<=3.11.6"
@@ -11,6 +11,7 @@ Flask = "^2.1.3"
 Flask-SQLAlchemy = "^3.0.3"
 Flask-WTF = "^1.1.1"
 WTForms = "^3.0.1"
+openai = "^0.26.4"
 email-validator = "^1.1.3"
 bs4 = "^0.0.1"
 wikipedia = "^1.4.0"
@@ -25,6 +26,38 @@ replit-python-lsp-server = {extras = ["yapf", "rope", "pyflakes"], version = "^1
 toml = "^0.10.2"
 ruff = "^0.1.6"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.6"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+# Exclude directories and files
+exclude = [
+    ".git",
+    "venv",
+    # other directories or files to exclude
+]
+
+# Linting and formatting settings
+line-length = 88
+indent-width = 4
+target-version = "py38"
+
+# Lint settings
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E501"]
+
+# Specify lint rules to ignore for certain files
+# Ignore E402 and F403 in main.py due to Flask structure
+[tool.ruff.lint.per-file-ignores]
+"main.py" = ["E402", "F403"]
+
+
+# Formatting settings
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
