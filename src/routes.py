@@ -3,14 +3,11 @@ from main import app, db
 from src.models import User, Place, Favoritelist, Favoriteitem, Searchlist, Searchitem, Travel, Travellist, Travelplaceitem, Blurb
 from src.forms import OriginDestinationForm, RegistrationForm, LoginForm, SummarizeForm, BudgetForm
 from flask_login import current_user, login_user, logout_user, login_required
-from src.map_requests import get_cities_list, get_route_distance_meters, APIError
+from src.map_requests import get_cities_list, APIError
 #from map_requests import APIError
-from src.log_manager import global_logger as log
-from src.login_manager_helper_functions import load_user, unauthorized  # Necessary!
 from src.routing_helper_functions import delete_removed_place_from_users_lists, place_generator, parse_travel_form_data, create_places_from_scraped_place_dict, exists, add_search_item, obtain_travel_price
 from src.chat_gpt_tools.gpt import SumChatGPT
 import json
-from json import JSONDecodeError
 from src.scraping_functions.wiki_places import get_main_image
 
 
@@ -44,7 +41,8 @@ def login():
     session[CURRENT_SESSION_USER] = user.id
 
     # not sure how to use this yet
-    next_page = request.args.get('next')
+    # next_page = request.args.get('next')
+
     # redirect the valid login to the profiles page
     #return redirect(next_page) if next_page else redirect(url_for('profiles', _external=True, _scheme='http'))
     flash(f"Successful login, {user.username}.")
@@ -91,7 +89,7 @@ def place_info(place_id):
 
   try:
     place_wiki = json.loads(place.wiki)
-  except json.decoder.JSONDecodeError as e:
+  except json.decoder.JSONDecodeError:
     place_wiki = json.dumps('{"error": "wiki not availble"}')
 
 

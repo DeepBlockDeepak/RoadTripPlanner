@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.6  # Specify the version of Ruff you want to use
+    hooks:
+      - id: ruff
+        args: [ --fix ]  # Enable auto-fixes by Ruff
+      - id: ruff-format
+
+  # Add other formatting tools after Ruff's lint and format hooks
+  - repo: https://github.com/psf/black
+    rev: 23.10.1  # Specify the version of Black you want to use
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.1  # Specify the version of isort you want to use
+    hooks:
+      - id: isort

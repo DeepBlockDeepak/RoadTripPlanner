@@ -10,6 +10,9 @@ __pycache__/
 .config/
 .replit
 
+# Ruff specific
+.ruff_check
+
 # Database files
 *.db
 

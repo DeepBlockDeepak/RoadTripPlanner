@@ -1,6 +1,5 @@
 import wikipedia
 import re
-from log_manager import global_logger as log
 
 
 def get_wikiheader_regex(level):
