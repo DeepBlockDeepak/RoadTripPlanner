@@ -1,6 +1,5 @@
 import asyncio
 import json
-import time
 
 import aiohttp
 import requests
@@ -330,32 +329,6 @@ def get_city_name(address_components: list[dict]) -> list[str] | None:
 	return None
 
 
-def time_function(func, *args):
-	"""Accepts a function and its arguments, prints out execution time and returns function's return value(s)"""
-	start_time = time.time()
-	values = func(*args)
-	end_time = time.time()
-
-	print(
-		f"Function {func.__name__} executed in {round(end_time - start_time, 3)} seconds."
-	)
-	return values
-
-
-def _test_route() -> None:
-	origin = "Socorro, New Mexico"
-	destination = "New York City, New York"
-
-	print(f"Running route test from '{origin}' to '{destination}'...")
-	cities = get_cities_list(origin, destination)
-
-	if cities:
-		print("Response:")
-		print(
-			"\n".join([f"{city[0]}, {city[1]}, {city[2]}" for city in cities.values()])
-		)
-
-
 def _test_images() -> None:
 	photo_source = "Microsoft Headquarters, Redmond, WA"
 
@@ -377,8 +350,3 @@ class APIError(Exception):
 
 	def __str__(self):
 		return f"{self.message} (Endpoint: {self.endpoint})"
-
-
-if __name__ == "__main__":
-	# Test module
-	time_function(_test_route)
