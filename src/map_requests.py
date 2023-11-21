@@ -17,7 +17,7 @@ def get_cities_list(origin: str, destination: str) -> dict[str, list]:
 	log.info(f"Fetching route from {origin} to {destination}")
 
 	path = _get_coord_path(origin, destination)
-	placeIDs = _get_placeids_from_path(path)
+	placeIDs = get_placeids_from_path(path)
 	cities = asyncio.run(_build_cities_list(placeIDs))
 
 	log.info("Done!")
@@ -143,45 +143,54 @@ async def _get_city_from_id(placeID: str, retry: int = 0) -> tuple[str, str]:
 	)
 
 
-def _get_placeids_from_path(path: str) -> list:
-	"""Returns list of placeIDs given list of coordinate points formatted as 'lat1,lng1|lat2,lng2|...'"""
-	log.info("Plotting route points")
-
-	url = f"https://roads.googleapis.com/v1/snapToRoads?path={path}&interpolate=true&key={API_KEY}"
-	place_response = json.loads(requests.get(url).text)
-
+def get_placeids_from_path(path: str) -> list:
+	"""
+	Returns a list of place IDs from a given path of coordinates.
+	Filters out closely spaced points (less than 5 km apart).
+	"""
+	place_response = fetch_snapped_points(path)
 	if "warningMessage" in place_response:
-		log.warning(f"Snap-to-Roads API: {place_response['warningMessage']}")
+		# Handle the warning appropriately, e.g., log it or alert the user
+		handle_api_warning(place_response["warningMessage"])
 
-	points = place_response["snappedPoints"]
-
-	log.info("Trimming closely spaced points")
-
-	placeIDs = [points[0]["placeId"]]  # Initializes list with first point
-	first_loc = (points[0]["location"]["latitude"], points[0]["location"]["longitude"])
-
-	locations = [first_loc]
-
-	# Iterates over the other points, checking distance to previous point
-	for point in points[1:]:
-		placeID = point["placeId"]
-
-		location = (point["location"]["latitude"], point["location"]["longitude"])
-
-		if placeID not in placeIDs:
-			point_distance = _get_point_distance(
-				location, locations[-1]
-			)  # Comparing lat/lng of current point to lat/lng of current last element of final locations list
-
-			if point_distance == -1:
-				log.error(f"Point distance error: ID {placeID}")
-				continue
-
-			if point_distance > 5:
-				placeIDs.append(placeID)
-				locations.append(location)
+	points = place_response.get("snappedPoints", [])
+	placeIDs = filter_distant_points(points)
 
 	return placeIDs
+
+
+def fetch_snapped_points(path: str) -> dict:
+	"""
+	Fetches snapped points from Google Maps Snap-to-Roads API.
+	"""
+	url = f"https://roads.googleapis.com/v1/snapToRoads?path={path}&interpolate=true&key={API_KEY}"
+	response = requests.get(url)
+	if response.status_code != 200:
+		# Handle non-200 responses here, e.g., by raising an exception
+		raise APIError(
+			f"API request failed with status code: {response.status_code}", url
+		)
+	return json.loads(response.text)
+
+
+def filter_distant_points(points: list) -> list:
+	"""
+	Filters out points that are less than 5 km apart.
+	"""
+	placeIDs = []
+	for i, point in enumerate(points):
+		if (
+			i == 0
+			or _get_point_distance(points[i - 1]["location"], point["location"]) > 5
+		):
+			placeIDs.append(point["placeId"])
+	return placeIDs
+
+
+def handle_api_warning(warning_message: str):
+	# Implement the warning handling logic here
+	# For example, log the warning message
+	print(f"Warning Message from within `handle_api_warning`:\n{warning_message}")
 
 
 def get_place_images(name: str, input_type: str = "name") -> list | None:
@@ -336,14 +345,14 @@ def _test_images() -> None:
 				file.write(photo)
 
 
-class APIError(ValueError):
-	def __init__(self, msg, endpoint):
+class APIError(Exception):
+	def __init__(self, message, endpoint):
+		self.message = message
 		self.endpoint = endpoint
-		self.msg = msg
-		super().__init__(self.msg)
+		super().__init__(f"APIError: {self.message} URL: {self.endpoint}")
 
 	def __str__(self):
-		return str(self.msg)
+		return f"{self.message} (Endpoint: {self.endpoint})"
 
 
 if __name__ == "__main__":
