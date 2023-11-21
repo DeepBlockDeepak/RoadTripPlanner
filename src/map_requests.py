@@ -290,7 +290,20 @@ def get_point_distance(
 
 
 def get_city_name(address_components: list[dict]) -> list[str] | None:
-	"""Extracts city, county, and state names from address components."""
+	"""
+	Extracts city, county, and state names from address components.
+
+	Args:
+	    address_components: A list of dictionaries, each containing address details.
+
+	Returns:
+	    A list containing the city name, county name, and state name if available.
+	    Returns None if either city or state name cannot be determined.
+
+	Note:
+	    Uses list comprehension and 'next' to efficiently find the required components.
+	    'next' returns the first match or 'None' if not found.
+	"""
 	city_name = next(
 		(cmp["long_name"] for cmp in address_components if "locality" in cmp["types"]),
 		None,
