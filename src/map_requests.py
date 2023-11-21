@@ -181,7 +181,7 @@ def filter_distant_points(points: list) -> list:
 	for i, point in enumerate(points):
 		if (
 			i == 0
-			or _get_point_distance(points[i - 1]["location"], point["location"]) > 5
+			or get_point_distance(points[i - 1]["location"], point["location"]) > 5
 		):
 			placeIDs.append(point["placeId"])
 	return placeIDs
@@ -269,12 +269,27 @@ def get_coordinates(city: str) -> tuple[float, float]:
 	return (location["lat"], location["lng"])
 
 
-def _get_point_distance(
+def get_point_distance(
 	coord1: tuple[float, float], coord2: tuple[float, float]
 ) -> float:
-	"""Accepts 2 tuples (lat,lng) and returns distance between them in km"""
-	dist = geodesic(coord1, coord2).km
-	return dist
+	"""
+	Calculates the geodesic distance between two geographical points.
+
+	Args:
+	coord1: A tuple containing the latitude and longitude of the first point in decimal degrees.
+	coord2: A tuple containing the latitude and longitude of the second point in decimal degrees.
+
+	Returns:
+	The distance between the two points in kilometers.
+
+	Raises:
+	ValueError: If the input coordinates are not in the correct format.
+	"""
+	try:
+		dist = geodesic(coord1, coord2).km
+		return dist
+	except ValueError as e:
+		raise ValueError(f"Invalid coordinate format: {e}")
 
 
 def _get_city_name(address_components: list[dict]) -> list[str] | None:
