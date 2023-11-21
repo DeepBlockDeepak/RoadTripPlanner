@@ -28,6 +28,7 @@ ruff = "^0.1.6"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.6"
+pytest = "^7.4.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -55,6 +56,7 @@ ignore = ["E501"]
 # Ignore E402 and F403 in main.py due to Flask structure
 [tool.ruff.lint.per-file-ignores]
 "main.py" = ["E402", "F403"]
+"tests/test_map_requests.py" = ["E402"]
 
 
 # Formatting settings
