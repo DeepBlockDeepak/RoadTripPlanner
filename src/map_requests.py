@@ -46,8 +46,8 @@ def _get_coord_path(origin: str, destination: str) -> str:
 
 	if route_response["status"] != "OK":
 		if route_response["status"] == "ZERO_RESULTS":
-			trimmed_origin = _trim_place_name(origin)
-			trimmed_destination = _trim_place_name(destination)
+			trimmed_origin = simplify_city_name(origin)
+			trimmed_destination = simplify_city_name(destination)
 
 			if trimmed_origin != origin or trimmed_destination != destination:
 				return _get_coord_path(trimmed_origin, trimmed_destination)
@@ -74,8 +74,8 @@ def get_route_distance_meters(
 
 	if (status := route_response["status"]) != "OK":
 		if status == "ZERO_RESULTS":
-			n_origin = _trim_place_name(origin)
-			n_destination = _trim_place_name(destination)
+			n_origin = simplify_city_name(origin)
+			n_destination = simplify_city_name(destination)
 
 			if n_origin != origin or n_destination != destination:
 				return get_route_distance_meters(n_origin, n_destination)
@@ -91,18 +91,16 @@ def get_route_distance_meters(
 	)
 
 
-def _trim_place_name(name: str) -> str:
-	"""Removes subsequent words in city name (Tampa Bay, FL -> Tampa, FL)"""
-	comma = name.find(",")
-	space = name.find(" ")
+def simplify_city_name(name: str) -> str:
+	"""
+	Simplifies city names by keeping only the first word before the comma.
+	For example, converts 'Tampa Bay, FL' to 'Tampa, FL'.
+	If there is no comma in the name, returns the original name.
+	"""
+	parts = name.split(",", 1)  # Split only at the first comma
+	first_part = parts[0].split()[0]  # Take the first word before the comma
 
-	if space != -1 and space < comma:
-		trimmed_name = name[:space] + name[comma:]
-	else:
-		trimmed_name = name
-
-	log.info(f"Trimmed place name: '{name}' to '{trimmed_name}'")
-	return trimmed_name
+	return first_part + "," + parts[1] if len(parts) > 1 else name
 
 
 async def _build_cities_list(placeIDs: list[str]) -> list:
