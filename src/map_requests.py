@@ -329,19 +329,6 @@ def get_city_name(address_components: list[dict]) -> list[str] | None:
 	return None
 
 
-def _test_images() -> None:
-	photo_source = "Microsoft Headquarters, Redmond, WA"
-
-	print(f"Retrieving photos for {photo_source}")
-	photos = get_place_images(photo_source)
-	if photos:
-		print(f"Found {len(photos)} pictures")
-		i = 1
-		for photo in photos:
-			with open(f"photo_{i}.jpg", "wb") as file:
-				file.write(photo)
-
-
 class APIError(Exception):
 	def __init__(self, message, endpoint):
 		self.message = message
