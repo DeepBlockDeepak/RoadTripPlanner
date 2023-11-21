@@ -18,7 +18,7 @@ def get_cities_list(origin: str, destination: str) -> dict[str, list]:
 
 	path = _get_coord_path(origin, destination)
 	placeIDs = get_placeids_from_path(path)
-	cities = asyncio.run(_build_cities_list(placeIDs))
+	cities = asyncio.run(build_cities_list(placeIDs))
 
 	log.info("Done!")
 	log.debug(f"Summary: {len(placeIDs)} placeIDs -> {len(cities)} unique cities.")
@@ -103,23 +103,29 @@ def simplify_city_name(name: str) -> str:
 	return first_part + "," + parts[1] if len(parts) > 1 else name
 
 
-async def _build_cities_list(placeIDs: list[str]) -> list:
-	"""Calls _get_city_from_id asyncronously on all given place IDs to get city names, then trims duplicates"""
-	log.info("Building cities list from placeIDs")
-	unfiltered_cities_list = await asyncio.gather(
-		*[_get_city_from_id(placeID) for placeID in placeIDs]
-	)
+async def build_cities_list(placeIDs: list[str]) -> dict:
+	"""
+	Asynchronously fetches city information for each place ID and trims duplicate entries.
 
-	log.debug("Trimming duplicate cities")
+	Args:
+	placeIDs: A list of place IDs for which to fetch city information.
 
-	# cities = {city: placeID for city, placeID in unfiltered_cities_list if city and city not in cities}
+	Returns:
+	A dictionary mapping place IDs to a list containing city, county, and state names.
+
+	"""
+
+	# Asynchronously fetch city information for each placeID
+	city_info_futures = [_get_city_from_id(placeID) for placeID in placeIDs]
+	unfiltered_cities_list = await asyncio.gather(*city_info_futures)
+
+	# Optimize duplicate trimming using a set for faster lookups
+	seen_city_names = set()
 	cities = {}
-	city_names = []
-	for city in unfiltered_cities_list:
-		if city and city[1]:
-			if (city_name := city[1][0]) not in city_names:
-				city_names.append(city_name)
-				cities[city[0]] = city[1]
+	for placeID, city_info in unfiltered_cities_list:
+		if city_info and city_info[0] not in seen_city_names:
+			seen_city_names.add(city_info[0])
+			cities[placeID] = city_info
 
 	return cities
 
