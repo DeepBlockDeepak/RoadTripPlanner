@@ -27,35 +27,41 @@ def get_cities_list(origin: str, destination: str) -> dict[str, list]:
 
 
 def _get_coord_path(origin: str, destination: str) -> str:
-	"""Calculate route and return as list of pipe delimited coordinate points"""
-	log.debug(f"Building coordinate path from {origin} to {destination}")
+	"""
+	Calculate route and return as list of pipe delimited coordinate points.
 
+	Parameters:
+	origin (str): The starting point of the route.
+	destination (str): The endpoint of the route.
+
+	Returns:
+	str: A string of pipe-delimited coordinates representing the route.
+
+	Raises:
+	APIError: If the Directions API returns an error status.
+	"""
 	url = f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&key={API_KEY}"
-	route_response = json.loads(requests.get(url).text)
+	response = requests.get(url)
+	route_response = response.json()
 
-	if (status := route_response["status"]) != "OK":
-		if status == "ZERO_RESULTS":
-			n_origin = _trim_place_name(origin)
-			n_destination = _trim_place_name(destination)
+	if route_response["status"] != "OK":
+		if route_response["status"] == "ZERO_RESULTS":
+			trimmed_origin = _trim_place_name(origin)
+			trimmed_destination = _trim_place_name(destination)
 
-			if n_origin != origin or n_destination != destination:
-				return _get_coord_path(n_origin, n_destination)
+			if trimmed_origin != origin or trimmed_destination != destination:
+				return _get_coord_path(trimmed_origin, trimmed_destination)
 
-		log.critical(f"Directions API Error: {status}")
-		raise APIError(f"Directions API returned status: {status}", url)
+		raise APIError(f"Directions API Error: {route_response['status']}", url)
 
+	# Extracts coordinates from the route steps
 	legs = route_response["routes"][0]["legs"]
-
-	# Constructs 'path' string to be passed to API - Contains coords of each step along route
 	path = "|".join(
-		[
-			f"{step['end_location']['lat']},{step['end_location']['lng']}"
-			for leg in legs
-			for step in leg["steps"]
-		]
+		f"{step['end_location']['lat']},{step['end_location']['lng']}"
+		for leg in legs
+		for step in leg["steps"]
 	)
 
-	log.debug(f"Path string: '{path}'")
 	return path
 
 
