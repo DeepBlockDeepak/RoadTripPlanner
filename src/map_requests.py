@@ -20,9 +20,6 @@ def get_cities_list(origin: str, destination: str) -> dict[str, list]:
 	placeIDs = get_placeids_from_path(path)
 	cities = asyncio.run(build_cities_list(placeIDs))
 
-	log.info("Done!")
-	log.debug(f"Summary: {len(placeIDs)} placeIDs -> {len(cities)} unique cities.")
-
 	return cities  # {cityA_id: [city,county,state], cityB_id: [city,county,state]}
 
 
@@ -140,7 +137,7 @@ async def get_city_from_id(placeID: str) -> tuple[str, list[str]]:
 	if (status := geocode_response["status"]) != "OK":
 		raise APIError(f"Geocoding API error for ID '{placeID}': {status}", url)
 
-	return placeID, _get_city_name(geocode_response["results"][0]["address_components"])
+	return placeID, get_city_name(geocode_response["results"][0]["address_components"])
 
 
 def get_placeids_from_path(path: str) -> list:
@@ -292,33 +289,32 @@ def get_point_distance(
 		raise ValueError(f"Invalid coordinate format: {e}")
 
 
-def _get_city_name(address_components: list[dict]) -> list[str] | None:
-	"""Returns name of place as [City, County, State]" only if both components exist"""
-	city_name: str = None
-	state_name: str = None
-	county_name: str = None
-
-	for cmp in address_components:
-		if "types" not in cmp:
-			log.error("'types' field not present in address component")
-			continue
-
-		if "locality" in cmp["types"]:
-			city_name = cmp["long_name"]
-		elif "administrative_area_level_1" in cmp["types"]:
-			state_name = cmp["long_name"]
-		elif "administrative_area_level_2" in cmp["types"]:
-			county_name = cmp["long_name"]
+def get_city_name(address_components: list[dict]) -> list[str] | None:
+	"""Extracts city, county, and state names from address components."""
+	city_name = next(
+		(cmp["long_name"] for cmp in address_components if "locality" in cmp["types"]),
+		None,
+	)
+	state_name = next(
+		(
+			cmp["long_name"]
+			for cmp in address_components
+			if "administrative_area_level_1" in cmp["types"]
+		),
+		None,
+	)
+	county_name = next(
+		(
+			cmp["long_name"]
+			for cmp in address_components
+			if "administrative_area_level_2" in cmp["types"]
+		),
+		None,
+	)
 
 	if city_name and state_name:
-		if not county_name:
-			log.warning(f"Unknown county for '{city_name, state_name}'")
-		return [city_name, county_name, state_name]  # Typical return
-	else:
-		log.error(
-			f"Unknown city element: '{city_name if city_name else '-'}', '{county_name if county_name else '-'}', '{state_name if state_name else '-'}'"
-		)
-		return None  # No match found (Unknown city)
+		return [city_name, county_name, state_name]
+	return None
 
 
 def time_function(func, *args):
