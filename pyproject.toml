@@ -56,6 +56,7 @@ ignore = ["E501"]
 # Ignore E402 and F403 in main.py due to Flask structure
 [tool.ruff.lint.per-file-ignores]
 "main.py" = ["E402", "F403"]
+"tests/test_map_requests.py" = ["E402"]
 
 
 # Formatting settings
