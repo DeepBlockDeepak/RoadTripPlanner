@@ -116,7 +116,7 @@ async def build_cities_list(placeIDs: list[str]) -> dict:
 	"""
 
 	# Asynchronously fetch city information for each placeID
-	city_info_futures = [_get_city_from_id(placeID) for placeID in placeIDs]
+	city_info_futures = [get_city_from_id(placeID) for placeID in placeIDs]
 	unfiltered_cities_list = await asyncio.gather(*city_info_futures)
 
 	# Optimize duplicate trimming using a set for faster lookups
@@ -130,23 +130,17 @@ async def build_cities_list(placeIDs: list[str]) -> dict:
 	return cities
 
 
-async def _get_city_from_id(placeID: str, retry: int = 0) -> tuple[str, str]:
-	"""Returns city name (name, ID) from given place ID"""
-
+async def get_city_from_id(placeID: str) -> tuple[str, list[str]]:
+	"""Returns city name (ID, [City, County, State]) from given place ID"""
 	url = f"https://maps.googleapis.com/maps/api/geocode/json?place_id={placeID}&key={API_KEY}"
 	async with aiohttp.ClientSession() as session:
 		async with session.get(url) as response:
 			geocode_response = await response.json()
 
 	if (status := geocode_response["status"]) != "OK":
-		log.error(f"Geocoding error, skipping ID '{placeID}' with status: {status}")
-		# raise APIError(f"Geocoding API error for ID \'{placeID}\': {status}", url)
-		return None
+		raise APIError(f"Geocoding API error for ID '{placeID}': {status}", url)
 
-	return (
-		placeID,
-		_get_city_name(geocode_response["results"][0]["address_components"]),
-	)
+	return placeID, _get_city_name(geocode_response["results"][0]["address_components"])
 
 
 def get_placeids_from_path(path: str) -> list:
