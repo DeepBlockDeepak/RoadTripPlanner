@@ -2,7 +2,7 @@
 name = "travel_app"
 version = "0.1.0"
 description = ""
-authors = ["Jordan Medina jordan.medina1729@gmail.com"]
+authors = ["Jordan Medina <jordan.medina1729@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.10.0,<=3.11.6"
