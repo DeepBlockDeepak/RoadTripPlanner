@@ -3,7 +3,8 @@ import json
 from flask import flash, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
-from main import app, db
+from main import app  # @ BUG: Deprecated!!!
+from database import db
 from src.chat_gpt_tools.gpt import SumChatGPT
 from src.forms import (
 	BudgetForm,
