@@ -1,41 +1,36 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 from src.config import Config
-
-# Initialize Flask app
-app = Flask(__name__)
-app.config.from_object(Config)  # Load configuration from config.py
-
-# Initialize Flask-Login manager
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "login"  # Specify the route for unauthenticated users
-
-# Initialize SQLAlchemy with the Flask app
-db = SQLAlchemy(app)
+from database import db  # import the db instance
+from src.views import welcome_page, not_found
 
 
-# Define route for the homepage
-@app.route("/")
-@app.route("/index")
-@app.route("/home")
-def welcome_page():
-	# Render the welcome page template
-	return render_template("welcome_page.html")
+def create_app():
+	# Initialize Flask app
+	app = Flask(__name__)
+	app.config.from_object(Config)  # Load configuration from config.py
 
+	# Initialize SQLAlchemy with the app
+	db.init_app(app)
 
-# Define custom error handler for 404 errors
-@app.errorhandler(404)
-def not_found(_):  # Unused error argument can be indicated with an underscore
-	# Render the 404 error page template
-	return render_template("404.html")
+	# Initialize Flask-Login manager
+	login_manager = LoginManager()
+	login_manager.init_app(app)
+	login_manager.login_view = "login"  # Specify the route for unauthenticated users
 
+	# Load user function for Flask-Login
+	from src.models import User
 
-# Import routes from the routes module
-# Note: This import is placed here to avoid circular import issues
-from src.routes import *
+	@login_manager.user_loader
+	def load_user(user_id):
+		return User.query.get(int(user_id))
 
-# Conditional to run the app in standalone mode
-if __name__ == "__main__":
-	app.run()  # Start the Flask application
+	# Register blueprints, routes, and error handlers
+	app.add_url_rule("/", "welcome_page", welcome_page)
+	app.add_url_rule("/index", "welcome_page", welcome_page)
+	app.add_url_rule("/home", "welcome_page", welcome_page)
+
+	# Register error handlers
+	app.register_error_handler(404, not_found)
+
+	return app
