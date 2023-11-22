@@ -4,7 +4,7 @@ Stores the non-route, helper functions needed in routes.py
 
 import json
 
-from main import db
+from database import db
 from src.log_manager import global_logger as log
 from src.map_requests import APIError, get_nearby_activities, get_route_distance_meters
 from src.models import Favoriteitem, Place, Searchitem, Searchlist, User
