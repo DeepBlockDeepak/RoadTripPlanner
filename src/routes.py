@@ -5,14 +5,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from main import app  # @ BUG: Deprecated!!!
 from database import db
-from src.chat_gpt_tools.gpt import SumChatGPT
-from src.forms import (
-	BudgetForm,
-	LoginForm,
-	OriginDestinationForm,
-	RegistrationForm,
-	SummarizeForm,
-)
+from src.forms import BudgetForm, LoginForm, OriginDestinationForm, RegistrationForm
 from src.map_requests import APIError, get_cities_list
 from src.models import (
 	Blurb,
@@ -115,44 +108,6 @@ def place_info(place_id):
 	except json.decoder.JSONDecodeError:
 		place_wiki = json.dumps('{"error": "wiki not availble"}')
 
-	# instantiate the summary_form
-	summary_form = SummarizeForm(csrf_enabled=False)
-
-	# when user clicks the button, they trigger the logic below
-	if summary_form.validate():
-		# starts instance of chatGPT
-		gpt = SumChatGPT()
-		# pulls city and state name from Places entity
-		city = place.city
-		state = place.state
-		gpt_dest = city + ", " + state
-		# pulls scraped wiki from Places entity
-		wiki = place.wiki
-		# deconstructs wiki json to extract history header
-		json_wiki_data = json.loads(wiki)
-		gpt_output = ""
-
-		# checks to see if wiki is null or history section is null
-		if not json_wiki_data or "History" not in json_wiki_data:
-			gpt_output = f"{gpt_dest} information isn't Available."
-		else:
-			# if data wiki present, proceed
-			gpt_data = json_wiki_data["History"]
-			# sends city-state and scraped history to be processed by GPT API
-			try:
-				print("GPT CURRENT QUERY: " + gpt_dest)
-				gpt_output = gpt.gptWrapper(gpt_dest, gpt_data)
-			except Exception as e:
-				print(e)
-				print("GPT EXCEPTION ERROR")
-				# places default message if exception occoured
-				gpt_output = f"{gpt_dest} information isn't Available."
-		# places gpt output in Places atribute to be sent to the template
-		place.gpt_text = gpt_output
-
-		# render the gpt summary template
-		return render_template("place_sum.html", place=place, form=summary_form)
-
 	url_string = get_main_image(place.city, place.state)
 	if not url_string:
 		url_string = "https://en.wikipedia.org/static/images/icons/wikipedia.png"
@@ -161,7 +116,6 @@ def place_info(place_id):
 	return render_template(
 		"place.html",
 		place=place,
-		form=summary_form,
 		wiki_content=place_wiki,
 		url_string=url_string,
 	)
