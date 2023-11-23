@@ -29,28 +29,12 @@ from src.routing_helper_functions import (
 	obtain_travel_price,
 	parse_travel_form_data,
 	place_generator,
+	authenticate_user,
 )
 from src.scraping_functions.wiki_places import get_main_image
 
 # constant; key for the session to store the logged-in user-id
 CURRENT_SESSION_USER = "current_session_user"
-
-
-def authenticate_user(email, password):
-	"""
-	Authenticate a user by email and password.
-
-	Args:
-	    email (str): User's email address.
-	    password (str): User's password.
-
-	Returns:
-	    User: Authenticated user object, or None if authentication fails.
-	"""
-	user = User.query.filter_by(email=email).first()
-	if user and user.check_password(password):
-		return user
-	return None
 
 
 @app.route("/login", methods=["GET", "POST"])
