@@ -9,7 +9,7 @@ import pytz
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from main import db
+from database import db
 
 
 # Allows a User to write a "tweet" on the Dashboard
