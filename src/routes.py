@@ -3,7 +3,8 @@ import json
 from flask import flash, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
-from main import app, db
+from main import app  # @ BUG: Deprecated!!!
+from database import db
 from src.chat_gpt_tools.gpt import SumChatGPT
 from src.forms import (
 	BudgetForm,
@@ -42,39 +43,46 @@ from src.scraping_functions.wiki_places import get_main_image
 CURRENT_SESSION_USER = "current_session_user"
 
 
-# handles the user login
+def authenticate_user(email, password):
+	"""
+	Authenticate a user by email and password.
+
+	Args:
+	    email (str): User's email address.
+	    password (str): User's password.
+
+	Returns:
+	    User: Authenticated user object, or None if authentication fails.
+	"""
+	user = User.query.filter_by(email=email).first()
+	if user and user.check_password(password):
+		return user
+	return None
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
-	# immediately check if the user is logged in, and if so, redirect them
+	# Redirect already authenticated users to the home page
 	if current_user.is_authenticated:
-		flash("You must logout before you can log back in.")
-		return render_template("welcome_page.html")
+		flash("You are already logged in.")
+		return redirect(url_for("welcome_page"))
 
-	# make a login form
+	# Create and process the login form
 	form = LoginForm(csrf_enabled=False)
-
 	if form.validate_on_submit():
-		# find the user based on their sign-in email
-		user = User.query.filter_by(email=form.email.data).first()
+		# Authenticate user
+		user = authenticate_user(form.email.data, form.password.data)
+		if user:
+			# Login user and set session variable
+			login_user(user, remember=form.remember.data)
+			session[CURRENT_SESSION_USER] = user.id
 
-		# check for bad log-ins, notifying the user
-		if user is None or not user.check_password(form.password.data):
-			flash("You used an invalid username or invalid password")
-			return redirect(url_for("login"))
+			# Redirect to the requested page or to the user's profile
+			next_page = request.args.get("next")
+			flash(f"Welcome back, {user.username}!")
+			return redirect(next_page or url_for("profile", user_id=user.id))
+		flash("Invalid username or password.")
 
-		# log the verified user into the app, and store them into the session
-		login_user(user, remember=form.remember.data)
-		session[CURRENT_SESSION_USER] = user.id
-
-		# not sure how to use this yet
-		# next_page = request.args.get('next')
-
-		# redirect the valid login to the profiles page
-		# return redirect(next_page) if next_page else redirect(url_for('profiles', _external=True, _scheme='http'))
-		flash(f"Successful login, {user.username}.")
-		return redirect(url_for("profile", user_id=user.id))
-
-	# if a failed form attempt occurred
 	return render_template("login.html", form=form)
 
 
@@ -92,18 +100,6 @@ def logout():
 	session[CURRENT_SESSION_USER] = "None"
 	flash(f"Successfully logged out, {logged_in_user.username}.")
 	return render_template("welcome_page.html")
-
-
-# OLD PLACE_INFO ROUTE
-# Renders page detailing the Place()
-# used for anchoring Place items within html
-# @app.route("/place_info/<int:place_id>")
-# @login_required
-# def place_info(place_id):
-# get the unique place by id
-# place = Place.query.get(place_id)
-
-# return render_template('place.html', place=place)
 
 
 # Renders page detailing the Place()
