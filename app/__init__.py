@@ -20,7 +20,7 @@ def create_app():
 	)
 
 	# Load user function for Flask-Login
-	from src.models import User
+	from app.models import User
 
 	@login_manager.user_loader
 	def load_user(user_id):

@@ -5,13 +5,13 @@ Stores the non-route, helper functions needed in routes.py
 import json
 
 from database import db
-from src.log_manager import global_logger as log
-from src.map_requests import APIError, get_nearby_activities, get_route_distance_meters
-from src.models import Favoriteitem, Place, Searchitem, Searchlist, User
-from src.scraping_functions.gas_price_extractor import obtain_avg_gas_price
-from src.scraping_functions.population import get_place_pop
-from src.scraping_functions.state_abbreviations import state_abbr
-from src.scraping_functions.wiki_places import create_place_with_wiki
+from app.log_manager import global_logger as log
+from app.map_requests import APIError, get_nearby_activities, get_route_distance_meters
+from app.models import Favoriteitem, Place, Searchitem, Searchlist, User
+from app.scraping_functions.gas_price_extractor import obtain_avg_gas_price
+from app.scraping_functions.population import get_place_pop
+from app.scraping_functions.state_abbreviations import state_abbr
+from app.scraping_functions.wiki_places import create_place_with_wiki
 
 # used for parsing the Travel Form data
 TRAVEL_FORM_DELIMITER = ", "

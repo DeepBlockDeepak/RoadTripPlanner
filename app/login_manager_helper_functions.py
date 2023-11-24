@@ -4,7 +4,7 @@ They are necessary for tracking the App User
 """
 
 from main import login_manager
-from src.models import User
+from app.models import User
 
 
 # for help managing the logged in Users

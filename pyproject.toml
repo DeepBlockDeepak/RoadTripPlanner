@@ -56,12 +56,12 @@ ignore = ["E501"]
 [tool.ruff.lint.per-file-ignores]
 "main.py" = ["E402", "F403"]
 "tests/test_map_requests.py" = ["E402"]
-"src/auth/__init__.py" = ["F401", "E402"]
-"src/dashboard/__init__.py" = ["F401", "E402"]
-"src/places/__init__.py" = ["F401", "E402"]
-"src/travel/__init__.py" = ["F401", "E402"]
-"src/user_profile/__init__.py" = ["F401", "E402"]
-"src/utility/__init__.py" = ["F401", "E402"]
+"app/auth/__init__.py" = ["F401", "E402"]
+"app/dashboard/__init__.py" = ["F401", "E402"]
+"app/places/__init__.py" = ["F401", "E402"]
+"app/travel/__init__.py" = ["F401", "E402"]
+"app/user_profile/__init__.py" = ["F401", "E402"]
+"app/utility/__init__.py" = ["F401", "E402"]
 
 
 # Formatting settings
