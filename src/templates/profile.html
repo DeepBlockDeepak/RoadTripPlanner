@@ -54,7 +54,7 @@
     {% for travel in template_travel_list.travels %} 
       <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue">
         <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"
-        href="{{url_for('travel_profile', user_id=template_user.id, travel_id=travel.id)}}">{{ travel }}</a></p>
+        href="{{url_for('travel.travel_profile', user_id=template_user.id, travel_id=travel.id)}}">{{ travel }}</a></p>
     {% endfor %}
     {% endif %}  
   </div>
@@ -66,9 +66,9 @@
     {% for place in template_places %}
         <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
           <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"
-          href="{{url_for('place_info', place_id=place.id)}}">{{place}}</a>
+          href="{{url_for('places.place_info', place_id=place.id)}}">{{place}}</a>
           {% if template_favorite_list %}
-            <a href="{{url_for('add_favorite_item', user_id = template_user.id, place_id = place.id, favoritelist_id = template_favorite_list.id)}}"> ... Add to Favorites</a>
+            <a href="{{url_for('user_profile.add_favorite_item', user_id = template_user.id, place_id = place.id, favoritelist_id = template_favorite_list.id)}}"> ... Add to Favorites</a>
           {% endif %}
         </p>
     {% endfor %}
@@ -81,7 +81,7 @@
       {% for place in template_places %}
         {% if item.place_id == place.id %} 
         <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue"> {{ place }} 
-          <a href="{{url_for('remove_item', user_id = template_user.id, item_id = item.id, item_type = 'favorite')}}"
+          <a href="{{url_for('user_profile.remove_item', user_id = template_user.id, item_id = item.id, item_type = 'favorite')}}"
           style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Remove</a></p>
         {% endif %}
       {% endfor %}
@@ -100,7 +100,7 @@
         {% if item.place_id == place.id %} 
         <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color:aliceblue"> {{ place }} 
           <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"; 
-          href="{{url_for('remove_item', user_id = template_user.id, item_id = item.id, item_type =  'search')}}">Remove</a></p>
+          href="{{url_for('user_profile.remove_item', user_id = template_user.id, item_id = item.id, item_type =  'search')}}">Remove</a></p>
         {% endif %}
       {% endfor %}
     

@@ -9,7 +9,7 @@
         {% endif %}
         <ul style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"> <!--commit this?-->
         {% for user in current_users %}
-        <li class = "link"; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><a href="{{ url_for('profile', user_id = user.id)}}">{{user}}</a> ... joined on {{ user.joined_at.strftime("%B %d, %Y at %H:%M:%S") }}</li>
+        <li class = "link"; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><a href="{{ url_for('user_profile.profile', user_id = user.id)}}">{{user}}</a> ... joined on {{ user.joined_at.strftime("%B %d, %Y at %H:%M:%S") }}</li>
         {% endfor %}
         </ul>
     </div>

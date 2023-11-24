@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h3 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Hi, {{ user.username}}. <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"; href="{{url_for('profile', user_id=user.id)}}">Go Back to your profile</a></h3>
+<h3 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Hi, {{ user.username}}. <a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"; href="{{url_for('user_profile.profile', user_id=user.id)}}">Go Back to your profile</a></h3>
 
 <div class="row">
   <div class="column" style="background-color:#8fffa9; padding: 10px; ">
@@ -13,7 +13,7 @@
             {% for place in places %}
               {% if place.id == travelplaceitem.place_id %}              
                 <li style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">
-                  <a href="{{url_for('place_info', place_id=place.id)}}">{{place}}</a>
+                  <a href="{{url_for('places.place_info', place_id=place.id)}}">{{place}}</a>
                 </li>
               {% endif %}
             {% endfor %}
