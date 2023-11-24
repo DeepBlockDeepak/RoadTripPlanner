@@ -175,3 +175,20 @@ def add_search_item(user_id, place_id, searchlist_id):
 		place.times_searched += 1
 		# commit the database changes here
 		db.session.commit()
+
+
+def authenticate_user(email, password):
+	"""
+	Authenticate a user by email and password.
+
+	Args:
+	    email (str): User's email address.
+	    password (str): User's password.
+
+	Returns:
+	    User: Authenticated user object, or None if authentication fails.
+	"""
+	user = User.query.filter_by(email=email).first()
+	if user and user.check_password(password):
+		return user
+	return None
