@@ -16,7 +16,9 @@ def create_app():
 	# Initialize Flask-Login manager
 	login_manager = LoginManager()
 	login_manager.init_app(app)
-	login_manager.login_view = "login"  # Specify the route for unauthenticated users
+	login_manager.login_view = (
+		"auth.login"  # Specify the route for unauthenticated users
+	)
 
 	# Load user function for Flask-Login
 	from src.models import User
