@@ -1,9 +1,9 @@
 from flask import flash, redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-from src.routing_helper_functions import authenticate_user
-from src.models import User, Travellist, Favoritelist, Searchlist
-from src.forms import LoginForm, RegistrationForm
-from src.auth import auth
+from app.routing_helper_functions import authenticate_user
+from app.models import User, Travellist, Favoritelist, Searchlist
+from app.forms import LoginForm, RegistrationForm
+from app.auth import auth
 from database import db
 
 # constant; key for the session to store the logged-in user-id
