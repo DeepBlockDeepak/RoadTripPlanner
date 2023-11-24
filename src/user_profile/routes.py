@@ -1,14 +1,10 @@
-import json
-
 from flask import flash, redirect, render_template, request, session, url_for
-from flask_login import current_user, login_required
+from flask_login import login_required
 
-from run import app  # @ BUG: Deprecated!!!
 from database import db
 from src.forms import BudgetForm, OriginDestinationForm
 from src.map_requests import APIError, get_cities_list
 from src.models import (
-	Blurb,
 	Favoriteitem,
 	Favoritelist,
 	Place,
@@ -24,75 +20,21 @@ from src.models import (
 from src.routing_helper_functions import (
 	add_search_item,
 	create_places_from_scraped_place_dict,
-	delete_removed_place_from_users_lists,
 	exists,
 	obtain_travel_price,
 	parse_travel_form_data,
 	place_generator,
 )
-from src.scraping_functions.wiki_places import get_main_image
+
+from src.user_profile import user_profile
 
 # constant; key for the session to store the logged-in user-id
 CURRENT_SESSION_USER = "current_session_user"
 
 
-# Renders page detailing the Place()
-# used for anchoring Place items within html
-@app.route("/place_info/<int:place_id>", methods=["POST", "GET"])
-@login_required
-def place_info(place_id):
-	# get the unique place by id
-	place = Place.query.get(place_id)
-
-	try:
-		place_wiki = json.loads(place.wiki)
-	except json.decoder.JSONDecodeError:
-		place_wiki = json.dumps('{"error": "wiki not availble"}')
-
-	url_string = get_main_image(place.city, place.state)
-	if not url_string:
-		url_string = "https://en.wikipedia.org/static/images/icons/wikipedia.png"
-
-	# render the place template
-	return render_template(
-		"place.html",
-		place=place,
-		wiki_content=place_wiki,
-		url_string=url_string,
-	)
-
-
-# Displays/anchors the User's list of Travels
-@app.route("/travel_profile/<int:user_id>/<int:travel_id>")
-@login_required
-def travel_profile(user_id, travel_id):
-	# Grab specific user
-	user = User.query.filter_by(id=user_id).first_or_404(
-		description="No such user found."
-	)
-
-	# find specific Travel belonging to that user
-	travel = Travel.query.get(travel_id)
-	# travel = Travel.query.filter_by(id=travel_id).first_or_404(description ="No Travel found!")
-
-	# Send all Places to the template for matching with the travelplaceitems
-	places = Place.query.all()
-
-	return render_template(
-		"profile_travels.html", user=user, travel=travel, places=places
-	)
-
-
-# Routes the "DB SCHEMA" navbar button to the image of our DB Schema
-@app.route("/display_schema")
-@login_required
-def display_schema():
-	return render_template("schema_diagram.html")
-
-
 # Lists all the users currently in the database
 # renders the users.html template providing the list of current users
-@app.route("/profiles")
+@user_profile.route("/profiles")
 @login_required
 def profiles():
 	# grab all users
@@ -103,7 +45,7 @@ def profiles():
 
 # Displays a specific User's profile page
 # renders the profile.html template for the User
-@app.route("/profile/<int:user_id>", methods=["GET", "POST"])
+@user_profile.route("/profile/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def profile(user_id):
 	# grab the specific user
@@ -117,7 +59,7 @@ def profile(user_id):
 			description="No such user found."
 		)
 		flash(f"Sorry, {logged_in_user.username}. You're not {user.username}!")
-		return redirect(url_for("profile", user_id=logged_in_user.id))
+		return redirect(url_for("user_profile.profile", user_id=logged_in_user.id))
 
 	# create the Travel Form, allowing the User to send POST request to database
 	travel_form = OriginDestinationForm(csrf_enabled=False)
@@ -209,7 +151,9 @@ def profile(user_id):
 # When a user clicks the 'Add' button next to a Place,
 #   that Place is added to their Favorite List (as represented by a FavoriteItem)
 # redirects back to the User's profile.html page
-@app.route("/add_favorite_item/<int:user_id>/<int:place_id>/<int:favoritelist_id>")
+@user_profile.route(
+	"/add_favorite_item/<int:user_id>/<int:place_id>/<int:favoritelist_id>"
+)
 @login_required
 def add_favorite_item(user_id, place_id, favoritelist_id):
 	# create the new Item
@@ -231,11 +175,11 @@ def add_favorite_item(user_id, place_id, favoritelist_id):
 		# commit the database changes here
 		db.session.commit()
 
-	return redirect(url_for("profile", user_id=user_id))
+	return redirect(url_for("user_profile.profile", user_id=user_id))
 
 
 # single function which can either remove item from either the Favorites or the Searched Items, depending on the value passed to the 'item_type' parameter.
-@app.route("/remove_item/<int:user_id>/<int:item_id>/<string:item_type>")
+@user_profile.route("/remove_item/<int:user_id>/<int:item_id>/<string:item_type>")
 @login_required
 def remove_item(user_id, item_id, item_type):
 	# item_handler returns either the Favorite or Search item Classes depending on the value passed
@@ -260,55 +204,4 @@ def remove_item(user_id, item_id, item_type):
 	db.session.delete(removed_item)
 	db.session.commit()
 
-	return redirect(url_for("profile", user_id=user_id))
-
-
-# Remove a Place from the available Place() visible from the prospective dashboard, available to only an Admin, perhaps?
-# Redirects back to the dashboard
-@app.route("/remove_place/<int:place_id>")
-@login_required
-def remove_place(place_id):
-	# from the Favitem model, fetch the item with primary key item_id to be deleted
-	removed_place = Place.query.get(place_id)
-	# using db.session delete the item
-	db.session.delete(removed_place)
-	# commit the deletion
-	db.session.commit()
-
-	# call this function in order to remove any list Items() which contain the deleted place
-	delete_removed_place_from_users_lists(place_id)
-
-	return redirect(url_for("dashboard"))
-
-
-# Sets up the dashboard functionality for the navbar button and renders the dashboard page
-@app.route("/dashboard", methods=["GET"])
-def dashboard():
-	users = User.query.all()
-	most_favorited_places = Place.query.order_by(Place.times_favorited.desc())[:5]
-	most_searched_places = Place.query.order_by(Place.times_searched.desc())[:5]
-
-	# query all blurbs for the dashboard rendering
-	blurbs = Blurb.query.all()
-
-	return render_template(
-		"dashboard.html",
-		users=users,
-		most_favorited_places=most_favorited_places,
-		most_searched_places=most_searched_places,
-		blurbs=blurbs,
-	)
-
-
-# Allows the user to enter a blurb
-@app.route("/submit_blurb", methods=["POST"])
-@login_required
-def submit_blurb():
-	# obtain the User's blurb content and create the Blurb instance for the db transaction
-	content = request.form["blurb"]
-	blurb = Blurb(content=content, author=current_user)
-
-	db.session.add(blurb)
-	db.session.commit()
-
-	return redirect(url_for("dashboard"))
+	return redirect(url_for("user_profile.profile", user_id=user_id))

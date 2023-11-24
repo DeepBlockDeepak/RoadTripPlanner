@@ -26,7 +26,7 @@ background-color: rgba(127, 255, 212, 0.667); width: 65%; margin:auto; border-ra
 
 <div style="width:500px; background-color: rgba(240, 255, 255, 0.664); padding: 30px; float: right; margin-right: 6%; margin-top: 2%">
     <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">User Blurbs</h2>
-    <form method="POST" action="{{ url_for('submit_blurb') }}">
+    <form method="POST" action="{{ url_for('dashboard.submit_blurb') }}">
         <label for="blurb"; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Share your thoughts:</label>
         <input type="text" name="blurb" id="blurb" required; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
         <input type="submit" value="Submit"; style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
