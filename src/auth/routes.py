@@ -15,7 +15,7 @@ def login():
 	# Redirect already authenticated users to the home page
 	if current_user.is_authenticated:
 		flash("You are already logged in.")
-		return redirect(url_for("welcome_page"))
+		return redirect(url_for("utility.welcome_page"))
 
 	# Create and process the login form
 	form = LoginForm(csrf_enabled=False)
@@ -30,7 +30,9 @@ def login():
 			# Redirect to the requested page or to the user's profile
 			next_page = request.args.get("next")
 			flash(f"Welcome back, {user.username}!")
-			return redirect(next_page or url_for("profile", user_id=user.id))
+			return redirect(
+				next_page or url_for("user_profile.profile", user_id=user.id)
+			)
 		flash("Invalid username or password.")
 
 	return render_template("login.html", form=form)
