@@ -1,7 +1,7 @@
 from statistics import mean
 
-from src.scraping_functions.gas import Gas
-from src.scraping_functions.state_abbreviations import state_abbr
+from app.scraping_functions.gas import Gas
+from app.scraping_functions.state_abbreviations import state_abbr
 
 
 def obtain_avg_gas_price():

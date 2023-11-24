@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_login import login_required
-from src.models import User, Place, Travel
-from src.travel import travel
+from app.models import User, Place, Travel
+from app.travel import travel
 
 
 # Displays/anchors the User's list of Travels
