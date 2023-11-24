@@ -5,7 +5,7 @@
 <div class="formwrapper"; style="background-color: #744908df; width:350px; text-align: center; margin:0; position:absolute;
 top:320px;left:50%;transform: translate(-50%,-50%);border:rgba(119, 136, 153, 0.692);";>
     <h1 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size: xxx-large;">Sign In</h1>
-        <p><a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"; href="{{ url_for('register') }}">New User Registration</a></p>
+        <p><a style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"; href="{{ url_for('auth.register') }}">New User Registration</a></p>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         
