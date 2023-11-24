@@ -1,14 +1,13 @@
 import json
 
 from flask import flash, redirect, render_template, request, session, url_for
-from flask_login import current_user, login_required
+from flask_login import login_required
 
 from run import app  # @ BUG: Deprecated!!!
 from database import db
 from src.forms import BudgetForm, OriginDestinationForm
 from src.map_requests import APIError, get_cities_list
 from src.models import (
-	Blurb,
 	Favoriteitem,
 	Favoritelist,
 	Place,
@@ -278,37 +277,4 @@ def remove_place(place_id):
 	# call this function in order to remove any list Items() which contain the deleted place
 	delete_removed_place_from_users_lists(place_id)
 
-	return redirect(url_for("dashboard"))
-
-
-# Sets up the dashboard functionality for the navbar button and renders the dashboard page
-@app.route("/dashboard", methods=["GET"])
-def dashboard():
-	users = User.query.all()
-	most_favorited_places = Place.query.order_by(Place.times_favorited.desc())[:5]
-	most_searched_places = Place.query.order_by(Place.times_searched.desc())[:5]
-
-	# query all blurbs for the dashboard rendering
-	blurbs = Blurb.query.all()
-
-	return render_template(
-		"dashboard.html",
-		users=users,
-		most_favorited_places=most_favorited_places,
-		most_searched_places=most_searched_places,
-		blurbs=blurbs,
-	)
-
-
-# Allows the user to enter a blurb
-@app.route("/submit_blurb", methods=["POST"])
-@login_required
-def submit_blurb():
-	# obtain the User's blurb content and create the Blurb instance for the db transaction
-	content = request.form["blurb"]
-	blurb = Blurb(content=content, author=current_user)
-
-	db.session.add(blurb)
-	db.session.commit()
-
-	return redirect(url_for("dashboard"))
+	return redirect(url_for("dashboard.dashboard"))

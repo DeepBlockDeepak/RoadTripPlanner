@@ -97,6 +97,6 @@ def register():
 		session[CURRENT_SESSION_USER] = user.id
 
 		# a succesful submission redirects the new user's profile page
-		return redirect(url_for("profile", user_id=user.id))
+		return redirect(url_for("user_profile.profile", user_id=user.id))
 
 	return render_template("registration.html", title="Register", form=form)

@@ -28,9 +28,11 @@ def create_app():
 		return User.query.get(int(user_id))
 
 	# Register blueprints, routes, and error handlers
-	from .auth import auth as auth_blueprint
+	from .auth import auth as auth_bp
+	from .dashboard import dashboard as dashboard_bp
 
-	app.register_blueprint(auth_blueprint)
+	app.register_blueprint(auth_bp)
+	app.register_blueprint(dashboard_bp)
 
 	app.add_url_rule("/", "welcome_page", welcome_page)
 	app.add_url_rule("/index", "welcome_page", welcome_page)
