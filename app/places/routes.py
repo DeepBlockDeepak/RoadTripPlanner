@@ -1,9 +1,9 @@
 import json
 from flask import render_template
 from flask_login import login_required
-from src.models import Place
-from src.places import places
-from src.scraping_functions.wiki_places import get_main_image
+from app.models import Place
+from app.places import places
+from app.scraping_functions.wiki_places import get_main_image
 
 
 # Renders page detailing the Place()
