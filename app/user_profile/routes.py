@@ -2,9 +2,9 @@ from flask import flash, redirect, render_template, request, session, url_for
 from flask_login import login_required
 
 from database import db
-from src.forms import BudgetForm, OriginDestinationForm
-from src.map_requests import APIError, get_cities_list
-from src.models import (
+from app.forms import BudgetForm, OriginDestinationForm
+from app.map_requests import APIError, get_cities_list
+from app.models import (
 	Favoriteitem,
 	Favoritelist,
 	Place,
@@ -17,7 +17,7 @@ from src.models import (
 )
 
 # from map_requests import APIError
-from src.routing_helper_functions import (
+from app.routing_helper_functions import (
 	add_search_item,
 	create_places_from_scraped_place_dict,
 	exists,
@@ -26,7 +26,7 @@ from src.routing_helper_functions import (
 	place_generator,
 )
 
-from src.user_profile import user_profile
+from app.user_profile import user_profile
 
 # constant; key for the session to store the logged-in user-id
 CURRENT_SESSION_USER = "current_session_user"

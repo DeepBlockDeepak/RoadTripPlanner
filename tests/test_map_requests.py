@@ -5,8 +5,8 @@ from pathlib import Path
 # Append the project root directory to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-# Now the script can import modules from src as if they were on the Python path
-from src.map_requests import get_cities_list
+# Now the script can import modules from app as if they were on the Python path
+from app.map_requests import get_cities_list
 
 
 def timing(func):

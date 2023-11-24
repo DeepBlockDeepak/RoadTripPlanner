@@ -1,7 +1,7 @@
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from src.models import User, Place, Blurb
-from src.dashboard import dashboard as dashboard_bp
+from app.models import User, Place, Blurb
+from app.dashboard import dashboard as dashboard_bp
 from database import db
 
 
