@@ -1,4 +1,4 @@
 {% extends "_base.html" %}
 {% block content %}
-<img src="../static/travel_app_schema.png" alt="The Current Database Schema for the Travel App" style="height:75%;">
+<img src="{{ url_for('static', filename='travel_app_schema.png') }}" alt="The Current Database Schema for the Travel App" style="height:75%;">
 {% endblock %} 
