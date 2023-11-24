@@ -1,9 +1,9 @@
 from flask import redirect, url_for, render_template
 from flask_login import login_required
 from database import db
-from src.models import Place
-from src.routing_helper_functions import delete_removed_place_from_users_lists
-from src.utility import utility
+from app.models import Place
+from app.routing_helper_functions import delete_removed_place_from_users_lists
+from app.utility import utility
 
 
 # Remove a Place from the available Place() visible from the prospective dashboard, available to only an Admin, perhaps?

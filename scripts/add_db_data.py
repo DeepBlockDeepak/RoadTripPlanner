@@ -5,7 +5,7 @@ Boostraps the travel_library.db with the project's creators as Users (along with
 import json
 
 from main import app, db
-from src.models import Blurb, Favoritelist, Place, Searchlist, Travellist, User
+from app.models import Blurb, Favoritelist, Place, Searchlist, Travellist, User
 
 with app.app_context():
 	# deletes any existing db in URI location before creating
