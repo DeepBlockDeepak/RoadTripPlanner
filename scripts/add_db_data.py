@@ -4,7 +4,8 @@ Boostraps the travel_library.db with the project's creators as Users (along with
 
 import json
 
-from main import app, db
+from run import app
+from database import db
 from app.models import Blurb, Favoritelist, Place, Searchlist, Travellist, User
 
 with app.app_context():
@@ -67,7 +68,7 @@ with app.app_context():
 	)
 	p3 = Place(
 		id=3,
-		city="Booze",
+		city="Bakersfield",
 		state="California",
 		population=407615,
 		activities="go shopping; produce crude oil; drink",
@@ -77,7 +78,7 @@ with app.app_context():
 	)
 	p4 = Place(
 		id=4,
-		city="Mall of America",
+		city="St. Paul",
 		state="Minnesota",
 		population=307193,
 		activities="fishing; drink coffee",
@@ -87,7 +88,7 @@ with app.app_context():
 	)
 	p5 = Place(
 		id=5,
-		city="Avenue of the Americas",
+		city="New York City",
 		state="New York",
 		population=98617,
 		activities="make money; eating",
