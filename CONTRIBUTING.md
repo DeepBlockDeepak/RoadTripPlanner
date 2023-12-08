@@ -73,5 +73,3 @@
 - Ensure that your code adheres to the project's coding standards and passes all checks.
 - When adding new dependencies, update `pyproject.toml` using `poetry add <dependency>`.
 - Use `poetry update` to update dependencies and `poetry lock --no-update` to regenerate the lock file without updating dependencies.
-
-Thank you for contributing to the Travel App project!
