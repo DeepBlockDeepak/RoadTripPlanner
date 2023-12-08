@@ -1,7 +1,5 @@
 # Contributing to Travel App
 
-Thank you for your interest in contributing to the Travel App! This document provides guidelines and instructions to help you get started.
-
 ## Setting Up the Project
 
 1. **Clone the Repository:**
