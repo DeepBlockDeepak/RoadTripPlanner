@@ -48,7 +48,7 @@ A brief overview of the project structure is as follows:
 - `scripts/`: Utility scripts for database and other tasks.
 - `tests/`: Test cases for the application.
 
-For a detailed explanation of the project structure, please refer to the [App Project Structure Wiki](https://github.com/DeepBlockDeepak/RoadTripPlanner/wiki/Database-Schema-Documentation).
+For a detailed explanation of the project structure, please refer to the [App Project Structure Wiki](https://github.com/DeepBlockDeepak/RoadTripPlanner/wiki/App-Project-Structure-Documentation).
 
 
 ## Contributing
