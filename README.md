@@ -32,7 +32,7 @@ Access the app by navigating to `http://127.0.0.1:5000/` in your web browser.
 
 ## Demo
 An example run of the app, showing most features and functionality.
-![Demo](media/travel_app.mov)
+![Watch the demo here](https://drive.google.com/file/d/1ajuBFztCUSt-SwGG6n6ECF2s3jMsB2FV/view?usp=drive_link)
 
 ## Database Schema
 ![Schema](app/static/travel_app_schema.png)
