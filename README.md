@@ -4,13 +4,11 @@
 Interactive web application for planning road trips, offering information on destinations, activities, cost estimates, and user-specific journey insights. Features secure user profiles for personalized trip planning.
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
-- Python 3.x
+### Prerequisites & Installation
+- Python >= 3.10
 - [Poetry](https://python-poetry.org/docs/#installation) for dependency management
 
-### Installation
 1. Clone the repository or download the ZIP file and extract it.
 2. Navigate to the project's root directory.
 3. Install dependencies using Poetry: 
@@ -19,14 +17,12 @@ poetry install
 ```
 
 
-### Setting Up the Database
+## Setting Up the Database and Running the Application
 To completely reset the database, use the provided script:
 ```bash
 poetry run python scripts/add_db_data.py
 ```
 
-
-### Running the Application
 Start the application with the following command:
 ```bash
 poetry run python run.py
@@ -34,11 +30,12 @@ poetry run python run.py
 
 Access the app by navigating to `http://127.0.0.1:5000/` in your web browser.
 
-## Testing
-Run the tests using the following command:
-```bash
-poetry run pytest
-```
+## Demo
+An example run of the app, showing most features and functionality (**Click image to view video**).
+[![Demo](app/static/travel_app_dashboard.png)](https://drive.google.com/file/d/1ajuBFztCUSt-SwGG6n6ECF2s3jMsB2FV/view?usp=sharing)
+
+## Database Schema
+![Schema](app/static/travel_app_schema.png)
 
 
 ## Project Structure
@@ -49,6 +46,13 @@ A brief overview of the project structure is as follows:
 - `tests/`: Test cases for the application.
 
 For a detailed explanation of the project structure, please refer to the [App Project Structure Wiki](https://github.com/DeepBlockDeepak/RoadTripPlanner/wiki/App-Project-Structure-Documentation).
+
+
+## Testing
+Run the tests using the following command:
+```bash
+poetry run pytest
+```
 
 
 ## Contributing
