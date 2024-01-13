@@ -31,7 +31,7 @@ poetry run python run.py
 Access the app by navigating to `http://127.0.0.1:5000/` in your web browser.
 
 ## Demo
-An example run of the app, showing most features and functionality.
+An example run of the app, showing most features and functionality (**Click image to view video**).
 [![Demo](app/static/travel_app_dashboard.png)](https://drive.google.com/file/d/1ajuBFztCUSt-SwGG6n6ECF2s3jMsB2FV/view?usp=sharing)
 
 ## Database Schema
