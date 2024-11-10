@@ -1,6 +1,7 @@
 from flask import render_template
 from flask_login import login_required
-from app.models import User, Place, Travel
+
+from app.models import Place, Travel, User
 from app.travel import travel
 
 

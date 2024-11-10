@@ -1,7 +1,6 @@
 from flask import flash, redirect, render_template, request, session, url_for
 from flask_login import login_required
 
-from database import db
 from app.forms import BudgetForm, OriginDestinationForm
 from app.map_requests import APIError, get_cities_list
 from app.models import (
@@ -25,8 +24,8 @@ from app.routing_helper_functions import (
 	parse_travel_form_data,
 	place_generator,
 )
-
 from app.user_profile import user_profile
+from database import db
 
 # constant; key for the session to store the logged-in user-id
 CURRENT_SESSION_USER = "current_session_user"

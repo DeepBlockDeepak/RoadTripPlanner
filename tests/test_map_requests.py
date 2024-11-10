@@ -1,5 +1,5 @@
-import time
 import sys
+import time
 from pathlib import Path
 
 # Append the project root directory to sys.path
